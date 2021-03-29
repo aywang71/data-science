@@ -1,0 +1,111 @@
+---
+title: "**Chicago weather data manipulation**"
+author: |
+  | **Andrew Wang** 
+  North Carolina School of Science and Mathematics
+date: "**9/6/2020**"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# clean up and setup
+rm(list=ls()) # clean up any old stuff in R
+setwd("C:/Users/hyper/OneDrive/Desktop/Desktop Folders/Programming/R") # go to this folder
+#load up myfunctions.R
+source("C:/Users/hyper/OneDrive/Desktop/Desktop Folders/Programming/R/myfunctions.R")
+library(lubridate)
+library(knitr)
+```
+
+### **Model Setup** 
+In this section, we established the basic parameters of the model, including cleaning up old data and setting up the working directory. Furthermore, we are setting up the `myfunctions.R` file so we can reference it for a pair plot.
+```{r model}
+#data cleanup and setup
+rm(list=ls())
+setwd("C:/Users/hyper/OneDrive/Desktop/Desktop Folders/Programming/R")
+source("C:/Users/hyper/OneDrive/Desktop/Desktop Folders/Programming/R/myfunctions.R")
+```
+
+### **Loading Libraries**
+We are using the lubridate package for date formatting. So we'll need to install and set up the package. Remember that you only need to install the package once. 
+```{r libraries, echo=TRUE}
+#install the lubridate package
+install.packages("lubridate", repos="http://cran.rstudio.com")
+#set up lubridate as library
+library(lubridate)
+```
+
+### **Read the CSV file** 
+Here, we're going to read the CSV file so that we can create a dataframe from it. Make sure your file is in the location of your working directory (defined above)
+```{r csv, echo=TRUE}
+#read a csv file
+weather <- read.csv("chicago.csv")
+```
+
+### **Data Demographics**
+We want to print out some basic information about the data. However, the `View(weather)` command here does not output the table, but it will in a normal R script. The following code will show the class, the dimensions, and the structure.
+```{r characterization, echo=TRUE}
+#opens up the data (in an R script)
+View(weather)
+#shows the class of the data
+class(weather)
+#shows the dimensions of the weather
+dim(weather)
+#gives a structural overview of the data
+str(weather)
+```
+
+### **Data Munging**
+We are deleting the `index` and `city` columns, as they are not needed.
+```{r munging, echo=TRUE}
+#delete index column
+weather$indx <- NULL
+#delete city column
+weather$city <- NULL
+```
+
+### **Change Column Names**
+We want to change the column names to something more appropriate. Here we refer to all the columns together instead of doing it separately because there's only one unchanged column name. 
+```{r columnName, echo=TRUE}
+#output column names
+names(weather)
+#change column names
+names(weather) <- c("Temp","DewPoint","Date","PM25","PM10","O3","NO3")
+#output column names again
+names(weather)
+```
+
+### **Change the Date Format**
+We want to change the date format using the `lubridate` package. Here, we change the date format from `m/d/yy` to `yyyy-mm-dd`
+```{r date, echo=TRUE}
+#change the data format
+weather$Date <- mdy(weather$Date)
+```
+
+### **Data Normalization**
+We want to change the N/A data values to be a value on a 0 to 1 scale based on the maximum value for each column. Essentially we are setting a percentage. However, before you do that you need to replace the N/A data points, so we're replacing them with the mean values of the column (calculated without the empty data points).
+```{r normalization, echo=TRUE}
+#normalization of the PM25 column
+weather$PM25 <- ifelse(is.na(weather$PM25),mean(weather$PM25,na.rm=TRUE),weather$PM25)
+weather$PM25 <- weather$PM25/max(weather$PM25)
+#normalization of the PM10 column
+weather$PM10 <- ifelse(is.na(weather$PM10),mean(weather$PM10,na.rm=TRUE),weather$PM10)
+weather$PM10 <- weather$PM10/max(weather$PM10)
+```
+
+### **Pairwise Plot**
+We make a pair plot for correlation and histogram numeric data. First, we create a subset of the data for the numeric columns, and we make sure to include all rows. After this we call the pair function for the numeric data subset and use the `panel.cor` and `panel.hist` functions from `myfunctions.R`.
+```{r plot, echo=TRUE}
+# creates a data subset with numeric columns
+numerics <- weather[,c(1,2,4:7)]
+# displays data subset as pair plot
+pairs(numerics, upper.panel = panel.cor, diag.panel = panel.hist)
+```
+
+
+### **Table of weather data**
+Below is the first 50 lines of data from the dataframe. There are close to 7,000 rows, so we're only going to display the first 50 rows. 
+```{r tableData, echo=FALSE}
+kable(weather[1:50, ],caption = "Chicago weather data (first 50 lines)")
+```
