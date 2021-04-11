@@ -4,9 +4,10 @@
 #
 # clean up and setup
 rm(list=ls()) # clean up any old stuff in R
-setwd("C:/Users/hyper/OneDrive/Desktop/Desktop Folders/Programming/R/Assignments/Final Project") # go to this folder
+setwd("~/GitHub/data-science/Old stuff/Final Project") # go to this folder
+
 #load up myfunctions.R
-source("C:/Users/hyper/OneDrive/Desktop/Desktop Folders/Programming/R/myfunctions.R")
+source("~/GitHub/data-science/myfunctions.R")
 
 #library import
 library(maps)
@@ -43,7 +44,7 @@ election <- na.omit(election) # we want to get rid of everything without numbers
 dim(election)
 
 #define party colors for coloring of geographic plots
-partyColors <- c("#2E74C0", "#CB454A")
+partyColors <- c("#2E74C0", "#CB454A","#0000FF")
 
 #margin finding with mutate
 election <- mutate(
@@ -208,23 +209,26 @@ stateSet$state <- NULL
 stateSet <- inner_join(stateSet,statepop)
 stateSet$pop_2015 <- NULL
 #plot
-stateShift <- plot_usmap(data = stateSet, values = "stateShift", color = "gray") + 
-  scale_fill_gradient2(low = partyColors[2], mid = "white", high = partyColors[1], na.value = "white") +
+stateShift2 <- plot_usmap(data = stateSet, values = "stateShift", color = "white") + 
+  scale_fill_gradient2(low = "black", mid = "white", high = "black", na.value = "white") +
   theme(legend.position = "none")
-#stateShift
 statePop <- plot_usmap(data = stateSet, values = "totalPop", color = "white") + 
-  scale_fill_gradient2(low = "black", mid = "gray", high = "white", na.value = "white") +
+  scale_fill_gradient2(low = "white", mid = "gray", high = "black", na.value = "white") +
   theme(legend.position = "none")
 #statePop
-grid.arrange(stateShift,statePop,nrow=1)
+grid.arrange(stateShift2,statePop,nrow=1)
 #plot
-state2020 <- plot_usmap(data = stateSet, values = "stateMargin2020", color = "gray") + 
+state2020 <- plot_usmap(data = stateSet, values = "stateMargin2020", color = "gray") +
   scale_fill_gradient2(low = partyColors[2], mid = "white", high = partyColors[1], na.value = "white") +
   theme(legend.position = "none")
-state2020
+#state2020
+stateShift <- plot_usmap(data = stateSet, values = "stateShift", color = "gray") +
+  scale_fill_gradient2(low = partyColors[2], mid = "white", high = partyColors[1], na.value = "white") +
+  theme(legend.position = "bottom")
+stateShift
 #plot
-state2016 <- plot_usmap(data = stateSet, values = "stateMargin2016", color = "gray") + 
+state2016 <- plot_usmap(data = stateSet, values = "stateMargin2016", color = "gray") +
   scale_fill_gradient2(low = partyColors[2], mid = "white", high = partyColors[1], na.value = "white") +
   theme(legend.position = "none")
-state2016
+#state2016
 grid.arrange(state2016,stateShift,state2020, nrow = 1)
