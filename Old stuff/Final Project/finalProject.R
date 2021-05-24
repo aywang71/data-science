@@ -213,9 +213,9 @@ stateShift2 <- plot_usmap(data = stateSet, values = "stateShift", color = "white
   scale_fill_gradient2(low = "black", mid = "white", high = "black", na.value = "white") +
   theme(legend.position = "none")
 statePop <- plot_usmap(data = stateSet, values = "totalPop", color = "white") + 
-  scale_fill_gradient2(low = "white", mid = "gray", high = "black", na.value = "white") +
+  scale_fill_gradient2(low = "white", mid = "lightgray", high = "black", na.value = "white") +
   theme(legend.position = "none")
-#statePop
+statePop
 grid.arrange(stateShift2,statePop,nrow=1)
 #plot
 state2020 <- plot_usmap(data = stateSet, values = "stateMargin2020", color = "gray") +
