@@ -4,9 +4,8 @@
 #
 # clean up and setup
 rm(list=ls()) # clean up any old stuff in R
-setwd("C:/Users/hyper/OneDrive/Desktop/Desktop Folders/Programming/R/Assignments/Week 10") # go to this folder
+setwd("C:/Users/hyper/OneDrive/Documents/GitHub/data-science/Old stuff/Week 10") # go to this folder
 #load up myfunctions.R
-source("C:/Users/hyper/OneDrive/Desktop/Desktop Folders/Programming/R/myfunctions.R")
 
 options(warn = -1)
 
@@ -20,9 +19,9 @@ library(gridExtra)
 
 climate <- read.csv("pop_failures.csv")
 View(climate)
-#dim(climate)
-#glimpse(climate)
-#str(climate)
+dim(climate)
+glimpse(climate)
+str(climate)
 print(sum(is.na(climate))) #no missing data
 
 #converting a few chr types to nums
@@ -33,8 +32,6 @@ climate$bckgrnd_vdc1 <- as.numeric(as.factor(climate$bckgrnd_vdc1))
 #used as.factor() so that it wouldn't pick up unrecognizable characters and then replace them into NAs by coercion  
 
 #look in background reading for column name descriptions
-
-
 
 #pair plot for viscosity variables (to look at their relationship) + prandtl
 viscos <- climate[, c(3:8, 20)]
@@ -80,7 +77,7 @@ trainingSet <- climate[ind == 1, 1:21]
 #view(trainingSet)
 testingSet <- climate[ind == 2, 1:21]
 #view(testingSet)
-trainingLabels <- climate[ind == 1, 21]
+trainingLabels <- climate[ind == 1, 21] #the labels are whether its a success or not
 #view(trainingLabels)
 testingLabels <- climate[ind == 2, 21]
 #view(testingLabels)
