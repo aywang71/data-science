@@ -17,7 +17,7 @@ library(gridExtra)
 
 #data import
 election <- read.csv("data/dataFresh.csv")
-View(election)
+#View(election)
 dim(election)
 
 #standardize data:
@@ -134,6 +134,7 @@ localCounty$abbr <- NULL
 #join datasets
 countyFIPS <- inner_join(localCounty, election, by = c("county","state"))
 countyFIPS$pop_2015 <- NULL
+
 
 ###countyFIPS dataset VERY IMPORTANT
 
