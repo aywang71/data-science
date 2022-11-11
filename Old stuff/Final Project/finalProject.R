@@ -64,10 +64,10 @@ demographics <- election[,16:50]
 
 #PCA analysis function to save code length
 customPCA <- function(data, description){
-  pca <- prcomp(t(data))
+  pca <- prcomp(t(data))#, scale = TRUE)
   View(pca$x)
   #screeplot + plot
-  plot(pca$x[,1],pca$x[,2])
+  plot(pca$x[,1],pca$x[,2]) #look at the first and second columns (PCs) 
   #variance calculation
   pcaV <- pca$sdev^2
   pcaV <- round(pcaV/sum(pcaV)*100,1)
